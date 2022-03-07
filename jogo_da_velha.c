@@ -8,7 +8,7 @@ struct players
 void printBoard(char Hash[3][3], int line, int column)
 {
 
-    printf("\n=========================================\n");
+    printf("\n=========================================\n\n");
 
     for (int i = 0; i < line; i++)
     {
@@ -25,10 +25,10 @@ void printBoard(char Hash[3][3], int line, int column)
 void playerMove(char Hash[3][3], player player, char play)
 {
 
-    printf("player %c, insira a linha de sua jogada: \n", play);
+    printf("\nplayer %c, insira a linha de sua jogada: \n", play);
     scanf("%d", &player.line);
 
-    printf("Agora a coluna de sua jogada: \n");
+    printf("\nAgora a coluna de sua jogada: \n");
     scanf("%d", &player.column);
 
     if (Hash[player.line][player.column] == '?')
@@ -72,21 +72,40 @@ char verifyColumn(char Hash[3][3])
 
 char verifyLine(char Hash[3][3])
 {
-    for (int coluna = 0; coluna < 3; coluna++)
+    for (int line = 0; line < 3; line++)
     {
-        if (Hash[coluna][0] == Hash[coluna][1] && Hash[coluna][0] == Hash[coluna][2])
+        if (Hash[line][0] == Hash[line][1] && Hash[line][0] == Hash[line][2])
         {
-            return Hash[coluna][0];
+            return Hash[line][0];
         }
     }
+    return '?';
+}
+
+char verifyTie(char Hash[3][3])
+{ 
+    int test, i, j;
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            if (Hash[i][j] != '?')
+            {
+                test++;
+            } 
+        }
+    }
+    if (test == 12)
+    {
+        return Hash[2][2];
+    }
+    
     return '?';
 }
 
 int verifyWin(char Hash[3][3])
 {
     char winner = verifyLine(Hash);
-
-    
     if (winner != '?')
     {
         printf("Jogador %c ganhou! =)", winner);
@@ -104,6 +123,13 @@ int verifyWin(char Hash[3][3])
     if (winner != '?')
     {
         printf("Jogador %c ganhou! =)", winner);
+        return 0;
+    }
+
+    winner = verifyTie(Hash);
+    if (winner != '?')
+    {
+        printf("DEU VELHA!!!", winner);
         return 0;
     }
 
@@ -133,7 +159,7 @@ int main()
 
     printf("\n=========================================\n");
 
-    while (count < 6)
+    while (count < 5)
     {
         playerMove(Hash, playerX, 'X');
         printBoard(Hash, 3, 3);
@@ -147,5 +173,6 @@ int main()
 
         count++;
     }
+
     return 0;
 }
